@@ -18,6 +18,16 @@
 </head>
 
 <body>
+    <div class="container">
+      <h1>Adress</h1>
+      <form method="post">
+         {% csrf_token %}
+         {{ form.as_p }}
+         <button type="submit">submit</button>
+      </form>
+    </div>
+
+
 
     <h1>Nearby Shops</h1>
     {% if shops %}
@@ -31,15 +41,17 @@
     {% endif %}
     <div id='mapid'></div>
     <script>
-      var map = L.map('mapid').setView([48.861013, 2.335858], 12);
+      var map = L.map('mapid').setView(["{{ text.y }}", "{{ text.x}}"], 12);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      L.marker([48.861013, 2.335858]).addTo(map)
+      L.marker(["{{ text.y }}", "{{ text.x}}"]).addTo(map)
       .bindPopup('Locate for rent.<br> Around Me.')
       .openPopup();
+
+
 
       {% for shop in shops %}
       var mark = L.marker(["{{ shop.location.y }}", "{{ shop.location.x  }}"], {
